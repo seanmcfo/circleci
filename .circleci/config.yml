@@ -5,16 +5,33 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - image: ubuntu:latest # specifically, a docker image
     steps:
       - checkout # this pulls code down from GitHub
-      - run: echo "A first hello" # This prints "A first hello" to stdout.
+      - run: mkdir my_workspace
+      - run: echo "A first hello" > my_workspace/echo-output # This prints "A first hello" to stdout.
   two:
     docker:
       - image: ubuntu:latest
     steps:
       - checkout
       - run: env && pwd
+  deploy:
+    docker:
+      - image: ubuntu:latest
+    steps:
+      - checkout
+      - run: echo "stage deployed!"
 workflows:
   version: 2
   test: # this is the name of our workflow
     jobs: # and here we list the jobs we are going to run.
       - one
       - two
+          reqires:
+            - one
+    - hold:
+        type: approval
+        requires:
+          - one
+          - two
+      - deploy:
+          requires:
+            - hold
