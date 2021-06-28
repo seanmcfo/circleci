@@ -27,7 +27,7 @@ workflows:
       - two
           reqires:
             - one
-    - hold:
+      - hold:
         type: approval
         requires:
           - one
