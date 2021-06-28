@@ -6,9 +6,15 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
     steps:
       - checkout # this pulls code down from GitHub
       - run: echo "A first hello" # This prints "A first hello" to stdout.
+  two:
+    docker:
+      - image: ubuntu:latest
+    steps:
+      - checkout
       - run: env && pwd
 workflows:
   version: 2
-  one: # this is the name of our workflow
+  test: # this is the name of our workflow
     jobs: # and here we list the jobs we are going to run.
       - one
+      - two
