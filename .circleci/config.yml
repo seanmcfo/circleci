@@ -20,10 +20,10 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - checkout
       - run: echo "stage deployed!"
 workflows:
-  test: # this is the name of our workflow
-    jobs: # and here we list the jobs we are going to run.
+  test:
+    jobs:
       - one
-      - two
+      - two:
           requires:
             - one
       - hold:
