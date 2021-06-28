@@ -1,18 +1,31 @@
 version: 2.1
+
+commands:
+  run_build:
+    description: "A very simple command for demonstration purposes"
+    parameters:
+      say:
+        type: string
+        default: "Hello World"
+    steps:
+      - run: echo << parameters.say >>
+  
+
 jobs: # we now have TWO jobs, so that a workflow can coordinate them!
-  one: # This is our first job.
+  build: # This is our first job.
     docker: # it uses the docker executor
       - image: ubuntu:latest # specifically, a docker image
     steps:
       - checkout # this pulls code down from GitHub
       - run: mkdir my_workspace
       - run: echo "A first hello" > my_workspace/echo-output # This prints "A first hello" to stdout.
-  two:
+      - run_build
+  tests:
     docker:
       - image: ubuntu:latest
     steps:
       - checkout
-      - run: env && pwd
+      - run: echo "testing"
   deploy:
     docker:
       - image: ubuntu:latest
@@ -22,15 +35,15 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
 workflows:
   test:
     jobs:
-      - one
-      - two:
+      - build
+      - test:
           requires:
-            - one
+            - build
       - hold:
           type: approval
           requires:
-            - one
-            - two
+            - build
+            - test
       - deploy:
           requires:
-            - hold
+            - deploy
