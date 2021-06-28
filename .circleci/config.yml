@@ -46,4 +46,4 @@ workflows:
             - test_job
       - deploy_job:
           requires:
-            - hold_job
+            - hold
