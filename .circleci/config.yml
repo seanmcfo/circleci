@@ -44,6 +44,6 @@ workflows:
           requires:
             - build_job
             - test_job
-      - deploy:
+      - deploy_job:
           requires:
-            - deploy_job
+            - hold_job
