@@ -12,7 +12,7 @@ commands:
   
 
 jobs: # we now have TWO jobs, so that a workflow can coordinate them!
-  build: # This is our first job.
+  build_job: # This is our first job.
     docker: # it uses the docker executor
       - image: ubuntu:latest # specifically, a docker image
     steps:
@@ -20,13 +20,13 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - run: mkdir my_workspace
       - run: echo "A first hello" > my_workspace/echo-output # This prints "A first hello" to stdout.
       - run_build
-  test:
+  test_job:
     docker:
       - image: ubuntu:latest
     steps:
       - checkout
       - run: echo "testing"
-  deploy:
+  deploy_job:
     docker:
       - image: ubuntu:latest
     steps:
@@ -35,15 +35,15 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
 workflows:
   test:
     jobs:
-      - build
-      - test:
+      - build_job
+      - test_job:
           requires:
-            - build
+            - build_job
       - hold:
           type: approval
           requires:
-            - build
-            - test
+            - build_job
+            - test_job
       - deploy:
           requires:
-            - deploy
+            - deploy_job
