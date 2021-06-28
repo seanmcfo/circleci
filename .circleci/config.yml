@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs: # we now have TWO jobs, so that a workflow can coordinate them!
   one: # This is our first job.
     docker: # it uses the docker executor
@@ -20,7 +20,6 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - checkout
       - run: echo "stage deployed!"
 workflows:
-  version: 2
   test: # this is the name of our workflow
     jobs: # and here we list the jobs we are going to run.
       - one
@@ -28,10 +27,10 @@ workflows:
           requires:
             - one
       - hold:
-        type: approval
-        requires:
-          - one
-          - two
+          type: approval
+          requires:
+            - one
+            - two
       - deploy:
           requires:
             - hold
