@@ -2,7 +2,7 @@ version: 2
 jobs: # we now have TWO jobs, so that a workflow can coordinate them!
   one: # This is our first job.
     docker: # it uses the docker executor
-      - image: ubuntu/latest # specifically, a docker image
+      - image: ubuntu:latest # specifically, a docker image
     steps:
       - checkout # this pulls code down from GitHub
       - run: echo "A first hello" # This prints "A first hello" to stdout.
