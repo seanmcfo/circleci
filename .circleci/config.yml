@@ -13,7 +13,7 @@ version: 2.1
 jobs: # we now have TWO jobs, so that a workflow can coordinate them!
   build_job: # This is our first job.
     parameters:
-      name:
+      users:
         type: string
       action:
         type: string
@@ -21,7 +21,7 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - image: ubuntu:latest # specifically, a docker image
     steps:
       - checkout # this pulls code down from GitHub
-      - run echo << parameters.name >>.<< parameters.action >>
+      - run echo << parameters.users >>.<< parameters.action >>
 #      - run: mkdir my_workspace
 #      - run: echo "A first hello" > my_workspace/echo-output # This prints "A first hello" to stdout.
       # - hello:
@@ -44,7 +44,7 @@ workflows:
       - build_job:
           matrix:
             parameters:
-              name: ["Dave", "Frank", "Bob"]
+              users: ["Dave", "Frank", "Bob"]
               action: ["Run", "Read", "Explode"]
       - test_job:
           requires:
