@@ -6,7 +6,7 @@ commands:
     matrix:
       parameters:
         say: ["Hello", "Goodbye"]
-        name: ["Dave","Mike"]
+        name: ["Dave", "Mike"]
     steps:
       - run: echo << parameters.say >> <<parameters.name>>
 
