@@ -32,7 +32,7 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
     steps:
       - checkout
       - run: echo "testing"
-      - run: echo "$CIRCLE_BRANCH"
+      - run: echo "$CIRCLE_BRANCH" CIRCLE_BRANCH $CIRCLE_BRANCH ${CIRCLE_BRANCH}
   deploy_job:
     docker:
       - image: busybox:latest
