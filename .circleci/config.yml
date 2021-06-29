@@ -22,7 +22,6 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
     steps:
       - checkout # this pulls code down from GitHub
       - run: echo << parameters.users >>.<< parameters.action >>
-      - run: echo "${CIRCLE_BRANCH}"
 #      - run: mkdir my_workspace
 #      - run: echo "A first hello" > my_workspace/echo-output # This prints "A first hello" to stdout.
       # - hello:
@@ -33,6 +32,7 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
     steps:
       - checkout
       - run: echo "testing"
+      - run: echo "$CIRCLE_BRANCH"
   deploy_job:
     docker:
       - image: ubuntu:latest
