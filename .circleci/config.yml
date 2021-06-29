@@ -14,7 +14,9 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!!
       - image: ubuntu:latest # specifically, a docker image
     steps:
       - checkout # this pulls code down from GitHub
-      - run echo << parameters.users >>.<< parameters.action >>."$CIRCLE_BRANCH"
+      - run: echo << parameters.users >>.<< parameters.action >>
+#      - run: mkdir my_workspace
+#      - run: echo "A first hello" > my_workspace/echo-output # This prints "A first hello" to stdout.
       # - hello:
       #     say: "Sean"
   test_job:
@@ -23,6 +25,7 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!!
     steps:
       - checkout
       - run: echo "testing"
+      - run: echo << pipeline.git.branch >>
   deploy_job:
     docker:
       - image: ubuntu:latest
@@ -32,6 +35,9 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!!
       
 workflows:
   main:
+    when:
+      and: # All must be true to trigger
+        - equal: [ main, << pipeline.git.branch >> ]
     jobs:
       - build_job:
           matrix:
@@ -54,6 +60,9 @@ workflows:
               only:
                 - main
   dev:
+    when:
+      and: # All must be true to trigger
+        - equal: [ dev, << pipeline.git.branch >> ]
     jobs:
       - build_job:
           matrix:
