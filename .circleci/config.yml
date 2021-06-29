@@ -3,15 +3,12 @@ version: 2.1
 commands:
   hello:
     description: "A very simple command for demonstration purposes"
-    parameters:
-      say:
-        type: string
-        default: ["Hello", "Goodbye"]
-      name:
-        type: string
-        default: ["Dave","Mike"]
+    matrix:
+      parameters:
+        say: ["Hello", "Goodbye"]
+        name: ["Dave","Mike"]
     steps:
-      - run: echo << parameters.say >>.<<parameters.name>>
+      - run: echo << parameters.say >> <<parameters.name>>
 
 jobs: # we now have TWO jobs, so that a workflow can coordinate them!
   build_job: # This is our first job.
