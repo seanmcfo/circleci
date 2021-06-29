@@ -18,7 +18,7 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       action:
         type: string
     docker: # it uses the docker executor
-      - image: ubuntu:latest # specifically, a docker image
+      - image: busybox:latest # specifically, a docker image
     steps:
       - checkout # this pulls code down from GitHub
       - run: echo << parameters.users >>.<< parameters.action >>
@@ -28,14 +28,14 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       #     say: "Sean"
   test_job:
     docker:
-      - image: ubuntu:latest
+      - image: busybox:latest
     steps:
       - checkout
       - run: echo "testing"
       - run: echo "$CIRCLE_BRANCH"
   deploy_job:
     docker:
-      - image: ubuntu:latest
+      - image: busybox:latest
     steps:
       - checkout
       - run: echo "stage deployed!"
