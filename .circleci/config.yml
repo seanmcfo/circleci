@@ -32,7 +32,6 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
     steps:
       - checkout
       - run: echo "testing"
-      - run: echo << pipeline.git.branch >>
   deploy_job:
     docker:
       - image: ubuntu:latest
@@ -47,6 +46,10 @@ workflows:
             parameters:
               users: ["Dave", "Frank", "Bob"]
               action: ["Run", "Read", "Explode"]
+          filters:
+            branches:
+              only:
+                - << pipeline.git.branch >>
       - test_job:
           requires:
             - build_job
@@ -58,10 +61,7 @@ workflows:
       - deploy_job:
           requires:
             - hold
-          filters:
-            branches:
-              only:
-                - main
+
   dev:
     jobs:
       - build_job:
@@ -69,6 +69,10 @@ workflows:
             parameters:
               users: ["Mary", "Ruby", "Susan"]
               action: ["Run", "Read", "Explode"]
+          filters:
+            branches:
+              only:
+                - << pipeline.git.branch >>
       - test_job:
           requires:
             - build_job
@@ -83,4 +87,4 @@ workflows:
           filters:
             branches:
               only:
-                - dev
+                - << pipeline.git.branch >>
