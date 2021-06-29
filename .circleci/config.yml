@@ -1,15 +1,17 @@
 version: 2.1
 
 commands:
-  run_build:
+  hello:
     description: "A very simple command for demonstration purposes"
     parameters:
       say:
         type: string
-        default: "Hello World"
+        default: ["Hello", "Goodbye"]
+      name:
+        type: string
+        default: ["Dave","Mike"]
     steps:
-      - run: echo << parameters.say >>
-  
+      - run: echo << parameters.say >>.<<parameters.name>>
 
 jobs: # we now have TWO jobs, so that a workflow can coordinate them!
   build_job: # This is our first job.
@@ -19,8 +21,8 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - checkout # this pulls code down from GitHub
       - run: mkdir my_workspace
       - run: echo "A first hello" > my_workspace/echo-output # This prints "A first hello" to stdout.
-      - run_build:
-          say: "Sean"
+      - hello:
+      #    say: "Sean"
   test_job:
     docker:
       - image: ubuntu:latest
@@ -34,7 +36,7 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - checkout
       - run: echo "stage deployed!"
 workflows:
-  test:
+  main:
     jobs:
       - build_job
       - test_job:
@@ -48,3 +50,7 @@ workflows:
       - deploy_job:
           requires:
             - hold
+          filters:
+            branches:
+              only:
+                - main
