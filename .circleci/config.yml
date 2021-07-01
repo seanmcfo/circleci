@@ -1,16 +1,9 @@
 version: 2.1
 
-# commands:
-#   hello:
-#     description: "A very simple command for demonstration purposes"
-#     parameters:
-#       say:
-#         type: string
-#         default: "Hello Dave"
-#     steps:
-#       - run: echo << parameters.say >>
+reference:
+  
 
-jobs: # we now have TWO jobs, so that a workflow can coordinate them!
+jobs: # we now have TWO jobs, so that a workflow can coordinate them!!
   build_job: # This is our first job.
     parameters:
       users:
@@ -39,6 +32,7 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
     steps:
       - checkout
       - run: echo "stage deployed!"
+      
 workflows:
   main:
     when:
