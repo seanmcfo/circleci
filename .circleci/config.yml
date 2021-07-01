@@ -24,8 +24,8 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - run: echo << parameters.users >>.<< parameters.action >>
 #      - run: mkdir my_workspace
 #      - run: echo "A first hello" > my_workspace/echo-output # This prints "A first hello" to stdout.
-      # - hello:
-      #     say: "Sean"
+#      - hello:
+#          say: "Sean"
   test_job:
     docker:
       - image: ubuntu:latest
