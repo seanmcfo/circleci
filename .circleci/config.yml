@@ -13,12 +13,12 @@ jobs: # we now have THREE jobs, so that a workflow can coordinate them!!
       - image: ubuntu:latest # specifically, a docker image
     steps:
       - checkout # this pulls code down from GitHub
-      - persist_to_workspace:
-          root: .
-          paths:
-              - .
+      # - persist_to_workspace:
+      #     root: .
+      #     paths:
+      #         - .
       - run: echo << parameters.users >>.<< parameters.action >>
-      - run: ls -l && echo "build job" && touch build_file
+      - run: touch build_file_<< parameters.users >>.<< parameters.action >>
 #      - run: mkdir my_workspace
 #      - run: echo "A first hello" > my_workspace/echo-output # This prints "A first hello" to stdout.
 #      - hello:
@@ -30,7 +30,7 @@ jobs: # we now have THREE jobs, so that a workflow can coordinate them!!
       #- checkout
       # - attach_workspace:
       #     at: .
-      - run: ls -l && echo "testing job" && touch test_results
+      - run: ls -l
       - run: echo << pipeline.git.branch >>
   deploy_job:
     docker:
