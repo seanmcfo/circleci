@@ -47,10 +47,10 @@ workflows:
         - equal: [ main, << pipeline.git.branch >> ]
     jobs:
       - build_job:
-          matrix:
-            parameters:
-              users: ["Dave", "Frank", "Bob"]
-              action: ["Run", "Read", "Explode"]
+          # matrix:
+          #   parameters:
+          #     users: ["Dave", "Frank", "Bob"]
+          #     action: ["Run", "Read", "Explode"]
       - test_job:
           requires:
             - build_job
@@ -72,10 +72,10 @@ workflows:
         - equal: [ dev, << pipeline.git.branch >> ]
     jobs:
       - build_job:
-          matrix:
-            parameters:
-              users: ["Mary", "Ruby", "Susan"]
-              action: ["Run", "Read", "Explode"]
+          # matrix:
+          #   parameters:
+          #     users: ["Mary", "Ruby", "Susan"]
+          #     action: ["Run", "Read", "Explode"]
       - test_job:
           requires:
             - build_job
