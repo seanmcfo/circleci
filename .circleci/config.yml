@@ -33,18 +33,18 @@ jobs: # we now have THREE jobs, so that a workflow can coordinate them!!
       #     at: .
       - run: ls -l
       # - run: echo << pipeline.git.branch >>
-  deploy_job:
-    docker:
-      - image: ubuntu:latest
-    steps:
-      - checkout
-      - run: ls -l && echo "stage deployed!"
+  # deploy_job:
+  #   docker:
+  #     - image: ubuntu:latest
+  #   steps:
+  #     - checkout
+  #     - run: ls -l && echo "stage deployed!"
       
 workflows:
   main:
-    when:
-      and: # All must be true to trigger
-        - equal: [ main, << pipeline.git.branch >> ]
+    # when:
+    #   and: # All must be true to trigger
+    #     - equal: [ main, << pipeline.git.branch >> ]
     jobs:
       - build_job:
           # matrix:
@@ -54,18 +54,18 @@ workflows:
       - test_job:
           requires:
             - build_job
-      - hold:
-          type: approval
-          requires:
-            - build_job
-            - test_job
-      - deploy_job:
-          requires:
-            - hold
-          filters:
-            branches:
-              only:
-                - main
+      # - hold:
+      #     type: approval
+      #     requires:
+      #       - build_job
+      #       - test_job
+      # - deploy_job:
+      #     requires:
+      #       - hold
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
   # dev:
   #   when:
   #     and: # All must be true to trigger
