@@ -1,4 +1,11 @@
 version: 2
+
+commands:
+  listDir:
+    description: "List current directory content"
+    steps:
+      - run: ls -la
+
 jobs:
   install-dependencies:
     docker:
@@ -8,9 +15,7 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./install-dependencies
-      - run:
-          name: List PWD
-          command: ls -la
+      - listDir:
       - persist_to_workspace:
           root: ./
           paths:
@@ -24,9 +29,7 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./build_staging
-      - run: 
-          name: List PWD
-          command: ls -la
+      - listDir:
       - persist_to_workspace:
           root: ./
           paths:
@@ -37,7 +40,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./
-      - run: ls -la
+      - listDir:
       - persist_to_workspace:
           root: ./
           paths:
