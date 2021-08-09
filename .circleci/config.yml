@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: List PWD
+          name: Create file
           command: echo $(date) > ./install-dependencies
       - run:
           name: List PWD
@@ -22,7 +22,7 @@ jobs:
       - attach_workspace:
           at: ./
       - run:
-          name: List PWD
+          name: Create file
           command: echo $(date) > ./build_staging
       - run: 
           name: List PWD
@@ -47,7 +47,6 @@ workflows:
   build:
     jobs:
       - install-dependencies
-      # build
       - build-staging:
           requires:
             - install-dependencies
