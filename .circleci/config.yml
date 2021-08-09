@@ -66,28 +66,28 @@ workflows:
             branches:
               only:
                 - main
-  dev:
-    when:
-      and: # All must be true to trigger
-        - equal: [ dev, << pipeline.git.branch >> ]
-    jobs:
-      - build_job:
-          # matrix:
-          #   parameters:
-          #     users: ["Mary", "Ruby", "Susan"]
-          #     action: ["Run", "Read", "Explode"]
-      - test_job:
-          requires:
-            - build_job
-      - hold:
-          type: approval
-          requires:
-            - build_job
-            - test_job
-      - deploy_job:
-          requires:
-            - hold
-          filters:
-            branches:
-              only:
-                - dev
+  # dev:
+  #   when:
+  #     and: # All must be true to trigger
+  #       - equal: [ dev, << pipeline.git.branch >> ]
+  #   jobs:
+  #     - build_job:
+  #         # matrix:
+  #         #   parameters:
+  #         #     users: ["Mary", "Ruby", "Susan"]
+  #         #     action: ["Run", "Read", "Explode"]
+  #     - test_job:
+  #         requires:
+  #           - build_job
+  #     - hold:
+  #         type: approval
+  #         requires:
+  #           - build_job
+  #           - test_job
+  #     - deploy_job:
+  #         requires:
+  #           - hold
+  #         filters:
+  #           branches:
+  #             only:
+  #               - dev
