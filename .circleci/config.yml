@@ -28,7 +28,7 @@ jobs: # we now have THREE jobs, so that a workflow can coordinate them!!
       - image: ubuntu:latest
     steps:
       #- checkout
-      attach_workspace:
+      - attach_workspace:
         at: .
       - run: ls -l && echo "testing job" && touch test_results
       - run: echo << pipeline.git.branch >>
