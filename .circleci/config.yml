@@ -52,7 +52,7 @@ workflows:
             - install-dependencies
       - build-production:
           requires:
-            - install-dependencies
+            - build-staging
 
 
 
