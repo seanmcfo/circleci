@@ -2,8 +2,7 @@ version: 2.1
 
 reference:
   
-
-jobs: # we now have TWO jobs, so that a workflow can coordinate them!!
+jobs: # we now have THREE jobs, so that a workflow can coordinate them!!
   build_job: # This is our first job.
     parameters:
       users:
@@ -14,7 +13,12 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!!
       - image: ubuntu:latest # specifically, a docker image
     steps:
       - checkout # this pulls code down from GitHub
+      - persist_to_workspace:
+          root: .
+          paths:
+              - .
       - run: echo << parameters.users >>.<< parameters.action >>
+      - run: ls -l && echo "build job" && touch build_file
 #      - run: mkdir my_workspace
 #      - run: echo "A first hello" > my_workspace/echo-output # This prints "A first hello" to stdout.
 #      - hello:
@@ -23,8 +27,10 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!!
     docker:
       - image: ubuntu:latest
     steps:
-      - checkout
-      - run: echo "testing"
+      #- checkout
+      attach_workspace:
+        at: .
+      - run: ls -l && echo "testing job" && touch test_results
       - run: echo << pipeline.git.branch >>
   deploy_job:
     docker:
