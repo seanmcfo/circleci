@@ -3,8 +3,7 @@ version: 2
 commands:
   listDir:
     description: "List current directory content"
-    steps:
-      - run: ls -la
+    - run: ls -la
 
 jobs:
   install-dependencies:
