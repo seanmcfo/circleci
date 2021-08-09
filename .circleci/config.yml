@@ -17,8 +17,9 @@ jobs: # we now have THREE jobs, so that a workflow can coordinate them!!
       #     root: .
       #     paths:
       #         - .
-      - run: echo << parameters.users >>.<< parameters.action >>
-      - run: touch build_file_<< parameters.users >>.<< parameters.action >>
+      # - run: echo << parameters.users >>.<< parameters.action >>
+      # - run: touch build_file_<< parameters.users >>.<< parameters.action >>
+      - run: echo foo > build_artifact
 #      - run: mkdir my_workspace
 #      - run: echo "A first hello" > my_workspace/echo-output # This prints "A first hello" to stdout.
 #      - hello:
@@ -31,7 +32,7 @@ jobs: # we now have THREE jobs, so that a workflow can coordinate them!!
       # - attach_workspace:
       #     at: .
       - run: ls -l
-      - run: echo << pipeline.git.branch >>
+      # - run: echo << pipeline.git.branch >>
   deploy_job:
     docker:
       - image: ubuntu:latest
