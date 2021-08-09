@@ -1,93 +1,155 @@
-version: 2.1
-
-reference:
-  
-jobs: # we now have THREE jobs, so that a workflow can coordinate them!!
-  build_job: # This is our first job.
-    # parameters:
-    #   users:
-    #     type: string
-    #   action:
-    #     type: string
-    docker: # it uses the docker executor
-      - image: ubuntu:latest # specifically, a docker image
-    steps:
-      - checkout # this pulls code down from GitHub
-      # - persist_to_workspace:
-      #     root: .
-      #     paths:
-      #         - .
-      # - run: echo << parameters.users >>.<< parameters.action >>
-      # - run: touch build_file_<< parameters.users >>.<< parameters.action >>
-      - run: echo foo > build_artifact
-#      - run: mkdir my_workspace
-#      - run: echo "A first hello" > my_workspace/echo-output # This prints "A first hello" to stdout.
-#      - hello:
-#          say: "Sean"
-  test_job:
+version: 2
+jobs:
+  install-dependencies:
     docker:
       - image: ubuntu:latest
     steps:
-      #- checkout
-      # - attach_workspace:
-      #     at: .
-      - run: ls -l
-      # - run: echo << pipeline.git.branch >>
-  # deploy_job:
-  #   docker:
-  #     - image: ubuntu:latest
-  #   steps:
-  #     - checkout
-  #     - run: ls -l && echo "stage deployed!"
-      
+      - checkout
+      - run:
+          name: List PWD
+          command: echo $(date) > ./install-dependencies
+      - run:
+          name: List PWD
+          command: ls -la
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - ./
+  build-staging:
+    docker:
+      - image: ubuntu:latest
+    steps:
+      - attach_workspace:
+          at: ./
+      - run:
+          name: List PWD
+          command: echo $(date) > ./build_staging
+      - run: 
+          name: List PWD
+          command: ls -la
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - ./
+  build-production:
+    docker:
+      - image: ubuntu:latest
+    steps:
+      - attach_workspace:
+          at: ./
+      - run: ls -la
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - ./
 workflows:
-  main:
-    # when:
-    #   and: # All must be true to trigger
-    #     - equal: [ main, << pipeline.git.branch >> ]
+  version: 2
+  build:
     jobs:
-      - build_job:
-          # matrix:
-          #   parameters:
-          #     users: ["Dave", "Frank", "Bob"]
-          #     action: ["Run", "Read", "Explode"]
-      - test_job:
+      - install-dependencies
+      # build
+      - build-staging:
           requires:
-            - build_job
-      # - hold:
-      #     type: approval
-      #     requires:
-      #       - build_job
-      #       - test_job
-      # - deploy_job:
-      #     requires:
-      #       - hold
-      #     filters:
-      #       branches:
-      #         only:
-      #           - main
-  # dev:
-  #   when:
-  #     and: # All must be true to trigger
-  #       - equal: [ dev, << pipeline.git.branch >> ]
-  #   jobs:
-  #     - build_job:
-  #         # matrix:
-  #         #   parameters:
-  #         #     users: ["Mary", "Ruby", "Susan"]
-  #         #     action: ["Run", "Read", "Explode"]
-  #     - test_job:
-  #         requires:
-  #           - build_job
-  #     - hold:
-  #         type: approval
-  #         requires:
-  #           - build_job
-  #           - test_job
-  #     - deploy_job:
-  #         requires:
-  #           - hold
-  #         filters:
-  #           branches:
-  #             only:
-  #               - dev
+            - install-dependencies
+      - build-production:
+          requires:
+            - install-dependencies
+
+
+
+
+
+
+# version: 2.1
+
+# reference:
+  
+# jobs: # we now have THREE jobs, so that a workflow can coordinate them!!
+#   build_job: # This is our first job.
+#     # parameters:
+#     #   users:
+#     #     type: string
+#     #   action:
+#     #     type: string
+#     docker: # it uses the docker executor
+#       - image: ubuntu:latest # specifically, a docker image
+#     steps:
+#       - checkout # this pulls code down from GitHub
+#       # - persist_to_workspace:
+#       #     root: .
+#       #     paths:
+#       #         - .
+#       # - run: echo << parameters.users >>.<< parameters.action >>
+#       # - run: touch build_file_<< parameters.users >>.<< parameters.action >>
+#       - run: echo foo > build_artifact
+# #      - run: mkdir my_workspace
+# #      - run: echo "A first hello" > my_workspace/echo-output # This prints "A first hello" to stdout.
+# #      - hello:
+# #          say: "Sean"
+#   test_job:
+#     docker:
+#       - image: ubuntu:latest
+#     steps:
+#       #- checkout
+#       # - attach_workspace:
+#       #     at: .
+#       - run: ls -l
+#       # - run: echo << pipeline.git.branch >>
+#   # deploy_job:
+#   #   docker:
+#   #     - image: ubuntu:latest
+#   #   steps:
+#   #     - checkout
+#   #     - run: ls -l && echo "stage deployed!"
+      
+# workflows:
+#   main:
+#     # when:
+#     #   and: # All must be true to trigger
+#     #     - equal: [ main, << pipeline.git.branch >> ]
+#     jobs:
+#       - build_job:
+#           # matrix:
+#           #   parameters:
+#           #     users: ["Dave", "Frank", "Bob"]
+#           #     action: ["Run", "Read", "Explode"]
+#       - test_job:
+#           requires:
+#             - build_job
+#       # - hold:
+#       #     type: approval
+#       #     requires:
+#       #       - build_job
+#       #       - test_job
+#       # - deploy_job:
+#       #     requires:
+#       #       - hold
+#       #     filters:
+#       #       branches:
+#       #         only:
+#       #           - main
+#   # dev:
+#   #   when:
+#   #     and: # All must be true to trigger
+#   #       - equal: [ dev, << pipeline.git.branch >> ]
+#   #   jobs:
+#   #     - build_job:
+#   #         # matrix:
+#   #         #   parameters:
+#   #         #     users: ["Mary", "Ruby", "Susan"]
+#   #         #     action: ["Run", "Read", "Explode"]
+#   #     - test_job:
+#   #         requires:
+#   #           - build_job
+#   #     - hold:
+#   #         type: approval
+#   #         requires:
+#   #           - build_job
+#   #           - test_job
+#   #     - deploy_job:
+#   #         requires:
+#   #           - hold
+#   #         filters:
+#   #           branches:
+#   #             only:
+#   #               - dev
