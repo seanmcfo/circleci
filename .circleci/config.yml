@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 commands:
   listDir:
@@ -47,7 +47,7 @@ jobs:
           paths:
             - ./
 workflows:
-  version: 2
+  version: 2.1
   build:
     jobs:
       - install-dependencies
