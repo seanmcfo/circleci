@@ -3,8 +3,22 @@ version: 2.1
 commands:
   listdir:
      description: "List dirs"
+    # parameters:
+    #   command:
+    #     type: string
      steps:
        - run: ls -la
+
+# commands:
+#   docker:
+#     parameters:
+#       command:
+#         type: string
+#     steps:
+#       - run:
+#           name: Execute docker command
+#           command: |
+
 jobs:
   install-dependencies:
     docker:
@@ -14,7 +28,7 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./install-dependencies
-      - listdir:
+      - listdir
       - persist_to_workspace:
           root: ./
           paths:
@@ -28,7 +42,7 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./build_staging
-      - listdir:
+      - listdir
       - persist_to_workspace:
           root: ./
           paths:
@@ -39,7 +53,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./
-      - listdir:
+      - listdir
       - persist_to_workspace:
           root: ./
           paths:
