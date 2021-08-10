@@ -15,56 +15,56 @@ commands:
 #        - run:
 #            name: list dirs
 #            command: ls -la
-jobs:
-  install-dependencies:
-    docker:
-      - image: ubuntu:latest
-    steps:
-      - checkout
-      - run:
-          name: Create file
-          command: echo $(date) > ./install-dependencies
-      - listDir:
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - ./
-  build-staging:
-    docker:
-      - image: ubuntu:latest
-    steps:
-      - attach_workspace:
-          at: ./
-      - run:
-          name: Create file
-          command: echo $(date) > ./build_staging
-      - listDir:
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - ./
-  build-production:
-    docker:
-      - image: ubuntu:latest
-    steps:
-      - attach_workspace:
-          at: ./
-      - listDir:
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - ./
-workflows:
-  version: 2
-  build:
-    jobs:
-      - install-dependencies
-      - build-staging:
-          requires:
-            - install-dependencies
-      - build-production:
-          requires:
-            - build-staging
+# jobs:
+#   install-dependencies:
+#     docker:
+#       - image: ubuntu:latest
+#     steps:
+#       - checkout
+#       - run:
+#           name: Create file
+#           command: echo $(date) > ./install-dependencies
+#       - listDir:
+#       - persist_to_workspace:
+#           root: ./
+#           paths:
+#             - ./
+#   build-staging:
+#     docker:
+#       - image: ubuntu:latest
+#     steps:
+#       - attach_workspace:
+#           at: ./
+#       - run:
+#           name: Create file
+#           command: echo $(date) > ./build_staging
+#       - listDir:
+#       - persist_to_workspace:
+#           root: ./
+#           paths:
+#             - ./
+#   build-production:
+#     docker:
+#       - image: ubuntu:latest
+#     steps:
+#       - attach_workspace:
+#           at: ./
+#       - listDir:
+#       - persist_to_workspace:
+#           root: ./
+#           paths:
+#             - ./
+# workflows:
+#   version: 2
+#   build:
+#     jobs:
+#       - install-dependencies
+#       - build-staging:
+#           requires:
+#             - install-dependencies
+#       - build-production:
+#           requires:
+#             - build-staging
 
 
 
