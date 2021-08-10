@@ -1,11 +1,11 @@
 version: 2.1
 
 commands:
-  listDir:
+  listdir:
      description: "List dirs"
      steps:
        - run:
-           name: list dirs
+           name: listdir
            command: ls -la
 jobs:
   install-dependencies:
@@ -16,7 +16,7 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./install-dependencies
-      - listDir:
+      - listdir:
       - persist_to_workspace:
           root: ./
           paths:
