@@ -16,7 +16,6 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./install-dependencies
-      - listdir:
       - persist_to_workspace:
           root: ./
           paths:
@@ -30,7 +29,6 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./build_staging
-      # - listDir
       - persist_to_workspace:
           root: ./
           paths:
@@ -41,7 +39,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ./
-      # - listDir
       - persist_to_workspace:
           root: ./
           paths:
@@ -51,9 +48,11 @@ workflows:
   build:
     jobs:
       - install-dependencies
+      - listdir
       - build-staging:
           requires:
             - install-dependencies
+      - listdir
       - build-production:
           requires:
             - build-staging
