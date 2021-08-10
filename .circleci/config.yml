@@ -1,7 +1,7 @@
 version: 2.1
 
 commands:
-  listDir:
+  listdir:
      description: "List dirs"
      steps:
        - run: ls -la
@@ -14,7 +14,7 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./install-dependencies
-      - listDir:
+      - listdir:
       - persist_to_workspace:
           root: ./
           paths:
@@ -28,7 +28,7 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./build_staging
-      # - listDir
+      - listdir:
       - persist_to_workspace:
           root: ./
           paths:
@@ -39,7 +39,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./
-      # - listDir
+      - listdir:
       - persist_to_workspace:
           root: ./
           paths:
