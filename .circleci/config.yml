@@ -16,7 +16,7 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./install-dependencies
-      # - listDir
+      - listDir:
       - persist_to_workspace:
           root: ./
           paths:
