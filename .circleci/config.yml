@@ -1,12 +1,10 @@
 version: 2.1
 
 commands:
-  listdir:
+  listDir:
      description: "List dirs"
      steps:
-       - run:
-           name: listdir
-           command: ls -la
+       - run: ls -la
 jobs:
   install-dependencies:
     docker:
@@ -16,6 +14,7 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./install-dependencies
+      - listDir:
       - persist_to_workspace:
           root: ./
           paths:
@@ -29,6 +28,7 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./build_staging
+      # - listDir
       - persist_to_workspace:
           root: ./
           paths:
@@ -39,6 +39,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./
+      # - listDir
       - persist_to_workspace:
           root: ./
           paths:
@@ -48,11 +49,9 @@ workflows:
   build:
     jobs:
       - install-dependencies
-      - listdir
       - build-staging:
           requires:
             - install-dependencies
-      - listdir
       - build-production:
           requires:
             - build-staging
