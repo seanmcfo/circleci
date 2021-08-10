@@ -7,15 +7,6 @@ commands:
        - run:
            name: list dirs
            command: ls -la
-
-# commands:
-#   list-dirs:
-#      description: "List dirs"
-#      steps:
-#        - run:
-#            name: list dirs
-#            command: ls -la
-
 jobs:
   install-dependencies:
     docker:
@@ -25,7 +16,7 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./install-dependencies
-      - listDir
+      # - listDir
       - persist_to_workspace:
           root: ./
           paths:
@@ -39,7 +30,7 @@ jobs:
       - run:
           name: Create file
           command: echo $(date) > ./build_staging
-      - listDir
+      # - listDir
       - persist_to_workspace:
           root: ./
           paths:
@@ -50,7 +41,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./
-      - listDir
+      # - listDir
       - persist_to_workspace:
           root: ./
           paths:
